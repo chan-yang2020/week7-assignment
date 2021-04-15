@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Right</title>
+    <script>
+        function get_data() {
+            var username = document.getElementById("name").value;
+            var src = "http://127.0.0.1:3000/api/users?username=" + username;
+            var req = new XMLHttpRequest();
+            req.open("get", src);
+            req.responseType = 'json';
+            req.onload = function () {
+                var data=this.response;
+                console.log(data);
+                handle_json(data,username);
+            };
+            req.send();
+        }
+
+        function handle_json( jsonObj,username) {
+            var name = document.createElement('div');
+            name.textContent = jsonObj['data']['name']+"("+username+")";
+            content.appendChild(name);
+        }
+            // fetch(src, {method:"get"})
+            //     .then(function (response) {
+            //         console.log(response.json);
+            //     });
+
+
+    </script>
+    <style>
+        body {
+            margin: 0px;
+        }
+
+        header {
+            text-align: center;
+            padding: 10px;
+            font-size: 20px;
+            background-color: cadetblue;
+        }
+
+        form {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        歡迎光臨，這是會員頁
+    </header>
+
+    <div style="text-align: center;">{{data}}，成功登入系統</div>
+    <form action="/loggedout">
+        <button>登出系統</button>
+    </form>
+
+    <div style="text-align: center;">查詢會員姓名</div>
+
+    <form id="form" action="/api/users" method="GET">
+        <input type="text" name="username" id="name" />
+        <button type="button" onclick="get_data() ">查詢</button>
+    </form>
+    <div style="text-align: center;" id="content"></div>
+</body>
+
+</html>
